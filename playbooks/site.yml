@@ -1,0 +1,9 @@
+- hosts: localhost
+  roles:
+    - genusers
+  tags: genusers
+
+- hosts: ldapvm
+  roles:
+    - openldap
+  tags: openldap

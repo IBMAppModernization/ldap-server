@@ -1,0 +1,61 @@
+- name: Ensure [ldapvm] group is populated
+  fail:
+    msg: >
+      Detected no [ldapvm] in inventory. Please add hosts to the
+      [ldapvm] host group to add nodes.
+  when: groups.ldapvm | default([]) | length == 0
+
+- name: Ensure variable ldap_bind_password is defined and not empty
+  fail:
+    msg: >
+      The variable 'ldap_bind_password' is not defined or empty
+  when: (ldap_bind_password is not defined) or (ldap_bind_password|length == 0)
+
+
+- name: Install OpenLDAP
+  yum:
+    state: latest
+    name:
+      - openldap-clients
+      - openldap-servers
+
+- name: Start OpenLDAP service and enable on boot
+  service:
+    name: slapd
+    state: started
+    enabled: yes
+
+- name: Configure OpenLDAP
+  script:
+    cmd:  "scripts/ldapConfig.sh {{ ldap_bind_password }}"
+  args:
+     creates: /etc/openldap/configChanges.ldif
+
+- name: Copy users.csv file
+  copy:
+    src: ../users/users.csv
+    dest: /etc/openldap
+
+- name: Generate users ldif from csv
+  script:
+    cmd: scripts/genUserLdif.sh
+  args:
+    creates: /etc/openldap/users.ldif
+
+- name: Add OpenLDAP base org
+  script:
+    cmd:  "scripts/addLdapBase.sh {{ ldap_bind_password }}"
+  args:
+     creates: /etc/openldap/base.ldif
+
+- name: Add OpenLDAP groups
+  script:
+    cmd:  "scripts/addLdapGroups.sh {{ ldap_bind_password }}"
+  args:
+     creates: /etc/openldap/groups.ldif
+
+- name: Add OpenLDAP users
+  script:
+    cmd:  "scripts/addLdapUsers.sh {{ ldap_bind_password }}"
+  args:
+     creates: /etc/openldap/user-status.txt

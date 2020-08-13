@@ -1,0 +1,4 @@
+- name: Generate users and passwords csv if it doesn't already exist
+  shell: scripts/genUsers.sh
+  args:
+     creates: ../users/users.csv
