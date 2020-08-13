@@ -2,22 +2,22 @@
 
 This repo contains an ansible playbook for installing and configuring the following on a VM with CentOS 7 or RHEL 7:
 
-  An OpenLDAP server with a set of users, groups and passwords.
+An OpenLDAP server with a set of users, groups and passwords.
 
-    * Latest available version in the yum repo is installed
+  * Latest available version in the yum repo is installed
 
-    * Two groups are created: *admins* and *developers*
-        * Members of the *admins* group will be Jenkins super users
-            - One member of this group will be created - *suser001*
-        * Members of the *developers* will be Jenkins regular users
-            - 40 members of this group will be created with usernames in the range:  *user001 - user040*
-        * **Manager DN** is `cn=admin,dc=clouddragons,dc=com`
-        * **External LDAP port** is `389`
-        * **Fully qualified user name** is like `uid=user001,ou=users,dc=clouddragons,dc=com`
-        * **Fully qualified group name** is like `cn=developers,ou=groups,dc=clouddragons,dc=com`
-        * **Group membership is like** `member: uid=user001,ou=users,dc=clouddragons,dc=com`
-        * **Group objectClass is** `groupOfNames`
-        * **User objectClass is** `inetOrgUser`
+  * Two groups are created: *admins* and *developers*
+      * Members of the *admins* group will be Jenkins super users
+          - One member of this group will be created - *suser001*
+      * Members of the *developers* will be Jenkins regular users
+          - 40 members of this group will be created with usernames in the range:  *user001 - user040*
+      * **Manager DN** is `cn=admin,dc=clouddragons,dc=com`
+      * **External LDAP port** is `389`
+      * **Fully qualified user name** is like `uid=user001,ou=users,dc=clouddragons,dc=com`
+      * **Fully qualified group name** is like `cn=developers,ou=groups,dc=clouddragons,dc=com`
+      * **Group membership is like** `member: uid=user001,ou=users,dc=clouddragons,dc=com`
+      * **Group objectClass is** `groupOfNames`
+      * **User objectClass is** `inetOrgUser`
 
 
 
